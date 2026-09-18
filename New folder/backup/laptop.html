@@ -1,0 +1,929 @@
+</head>
+<body class="bg-[#0b0d10] text-on-surface font-body-md text-body-md flex flex-col h-screen select-none">
+<!-- WINDOWS 11 TITLE BAR -->
+<div class="h-10 bg-[#111317] border-b border-[#282a2d] flex items-center justify-between px-3 select-none shrink-0 z-50">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 rounded-full bg-primary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[10px] text-on-primary font-bold">view_column</span>
+</div>
+<span class="font-label-sm text-xs font-medium tracking-wide text-on-surface-variant">FlapCast 01 - Windows Desktop Edition</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="w-10 h-8 hover:bg-[#282a2d] flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[14px]">remove</span>
+</button>
+<button class="w-10 h-8 hover:bg-[#282a2d] flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[12px]">check_box_outline_blank</span>
+</button>
+<button class="w-10 h-8 hover:bg-[#c42b1c] hover:text-white flex items-center justify-center text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+</div>
+</div>
+<!-- DESKTOP APP MAIN CONTAINER (SIDEBAR + CONTENT) -->
+<div class="flex flex-1 overflow-hidden bg-surface">
+<!-- WINDOWS 11 SIDEBAR NAVIGATION -->
+<aside class="w-64 bg-surface-container-low/90 border-r border-outline-variant/20 flex flex-col justify-between p-3 select-none shrink-0">
+<div class="flex flex-col gap-1">
+<div class="px-3 py-2 mb-2">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-outline">WORKSPACE</span>
+</div>
+<button class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-surface-container-high text-primary font-label-md text-label-md tracking-wider transition-all shadow-sm">
+<span class="material-symbols-outlined text-[20px]">view_column</span>
+<span>Live Board</span>
+</button>
+<button class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all font-label-md text-label-md tracking-wider">
+<span class="material-symbols-outlined text-[20px]">mic</span>
+<span>Voice Dictate</span>
+</button>
+<button class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all font-label-md text-label-md tracking-wider">
+<span class="material-symbols-outlined text-[20px]">history</span>
+<span>Presets Archive</span>
+</button>
+<button class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all font-label-md text-label-md tracking-wider">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+<span>Audio DSP &amp; Config</span>
+</button>
+</div>
+<!-- Sidebar Status Footer -->
+<div class="p-3 rounded-lg bg-surface-container-lowest border border-outline-variant/30 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-outline">MATRIX ENGINE</span>
+<span class="flex items-center gap-1 font-label-sm text-secondary">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+          60 FPS
+        </span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-outline">SOUND SYNTH</span>
+<span class="font-label-sm text-label-sm text-primary" id="sidebarSoundStatus">ACTIVE</span>
+</div>
+</div>
+</aside>
+<!-- MAIN DESKTOP CONTENT WORKAREA -->
+<main class="flex-1 overflow-y-auto p-6 flex flex-col gap-6 bg-surface">
+<!-- TOP HEADER STATUS BAR -->
+<div class="flex items-center justify-between gap-4 bg-surface-container-low p-4 rounded-xl border border-outline-variant/30 shadow-sm">
+<div class="flex items-center gap-3">
+<span class="w-3 h-3 rounded-full bg-primary-container shadow-[0_0_10px_#f59e0b] animate-pulse"></span>
+<div class="flex flex-col">
+<h1 class="font-headline-sm text-headline-sm uppercase text-primary tracking-wider">TERMINAL 01 • SOLARI UNIT</h1>
+<span class="font-label-sm text-label-sm text-outline">ELECTROMECHANICAL MATRIX MATRIX-14X4 • SOLARI DI UDINE DSP</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="px-3 py-1 rounded-lg bg-surface-container-high flex items-center gap-2 border border-outline-variant/20">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-secondary tracking-wider">SYNC 60FPS</span>
+</div>
+<button aria-label="Toggle mechanical clack sounds" class="h-9 px-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary flex items-center gap-2 transition-colors border border-outline-variant/20 shadow-sm" id="soundToggleBtn">
+<span class="material-symbols-outlined text-[18px]" id="soundIcon">volume_up</span>
+<span class="font-label-sm text-label-sm uppercase" id="soundLabel">CLACK ON</span>
+</button>
+</div>
+</div>
+<!-- MAIN WIDESCREEN SOLARI SPLIT-FLAP CHASSIS -->
+<div class="w-full">
+<div class="relative w-full rounded-xl bg-surface-container-lowest shadow-[0_16px_36px_rgba(0,0,0,0.85),inset_0_2px_4px_rgba(255,255,255,0.06),inset_0_-3px_8px_rgba(0,0,0,0.9)] p-4 sm:p-6 overflow-hidden border border-outline-variant/20">
+<!-- Overhead Warm Amber Grazing Light Beam -->
+<div class="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-primary/15 via-primary/5 to-transparent pointer-events-none"></div>
+<!-- Terminal Metal Header Plaque -->
+<div class="flex items-center justify-between pb-3 mb-3 border-b border-outline-variant/30 text-outline">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary">terminal</span>
+<span class="font-label-sm text-label-sm tracking-widest text-primary-fixed uppercase">CENTRAL DEPARTURES &amp; VOICE DISPATCH MATRIX</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline-variant uppercase" id="flipCountBadge">CYCLE: 0 FLAPS</span>
+</div>
+<!-- The 4-Row Split-Flap Array -->
+<div class="flex flex-col gap-2 w-full py-2" id="splitFlapMatrix">
+<!-- Dynamically populated rows: 4 rows x 14 tiles -->
+</div>
+<!-- Mechanical Chassis Base Shadow & Screws -->
+<div class="flex items-center justify-between pt-3 mt-3 border-t border-outline-variant/20 text-outline-variant">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-surface-variant shadow-inner"></div>
+<span class="font-label-sm text-label-sm tracking-wider text-outline/60">PATENTED SOLARI CASSETTE 1968-MOD (14 COLUMNS x 4 ROWS)</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="w-3 h-0.5 bg-outline-variant/50"></span>
+<span class="font-label-sm text-label-sm tracking-wider text-primary/70" id="matrixStateLabel">STATIONARY IDLE</span>
+<div class="w-2 h-2 rounded-full bg-surface-variant shadow-inner"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- DESKTOP CONTROL GRID (2 COLUMNS: AUDIO SYNTH & VOICE/DISPATCH) -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+<!-- ADVANCED SOLARI ACOUSTIC SYNTHESIZER CONSOLE -->
+<div class="p-5 rounded-xl bg-surface-container-low border border-outline-variant/30 shadow-[0_8px_24px_rgba(0,0,0,0.6)] flex flex-col justify-between gap-4">
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+<div class="flex items-center gap-3">
+<span class="w-3 h-3 rounded-full bg-primary shadow-[0_0_8px_#ffc174]" id="audioStatusLed"></span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md uppercase text-primary tracking-widest font-semibold flex items-center gap-2">
+                SOLARI SOUND SYNTHESIZER
+                <span class="text-[10px] px-1.5 py-0.5 rounded bg-primary-container/20 text-primary border border-primary-container/30 font-mono">DSP 3-BAND</span>
+</span>
+<span class="font-label-sm text-label-sm text-outline">Oscillator Sub-Percussive (60-120Hz) • Nylon Friction (3.1kHz) • Housing Resonance</span>
+</div>
+</div>
+<!-- Active Sound Level VU Meter -->
+<div class="flex items-end gap-1 h-6 px-2.5 py-1 rounded bg-surface-container-lowest border border-outline-variant/30" id="vuMeterContainer">
+<div class="w-1 bg-primary/40 rounded-full h-1 transition-all duration-75" id="vuBar1"></div>
+<div class="w-1 bg-primary/50 rounded-full h-1.5 transition-all duration-75" id="vuBar2"></div>
+<div class="w-1 bg-primary rounded-full h-2.5 transition-all duration-75" id="vuBar3"></div>
+<div class="w-1 bg-secondary rounded-full h-2 transition-all duration-75" id="vuBar4"></div>
+<div class="w-1 bg-secondary rounded-full h-1 transition-all duration-75" id="vuBar5"></div>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+<!-- Test Sound Trigger Button -->
+<button class="h-11 px-4 rounded-lg bg-gradient-to-r from-primary-container to-primary text-on-primary font-headline-sm text-headline-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_4px_12px_rgba(245,158,11,0.25)] hover:brightness-110 active:scale-95 transition-all" id="testSoundBtn">
+<span class="material-symbols-outlined text-[20px]">graphic_eq</span>
+<span>TESTEAZĂ CLACK SUNET</span>
+</button>
+<!-- Sound Profile Selector Mode -->
+<div class="flex items-center gap-1 bg-surface-container-lowest p-1 rounded-lg border border-outline-variant/30 h-11">
+<button class="sound-mode-btn flex-1 h-full rounded text-[11px] font-label-sm tracking-wider uppercase transition-all bg-primary text-on-primary font-bold shadow-sm" data-mode="solari">
+                Solari 1968
+              </button>
+<button class="sound-mode-btn flex-1 h-full rounded text-[11px] font-label-sm tracking-wider uppercase transition-all text-on-surface-variant hover:text-primary hover:bg-surface-container" data-mode="studio">
+                Studio
+              </button>
+<button class="sound-mode-btn flex-1 h-full rounded text-[11px] font-label-sm tracking-wider uppercase transition-all text-on-surface-variant hover:text-primary hover:bg-surface-container" data-mode="soft">
+                Soft
+              </button>
+</div>
+</div>
+<!-- Volume & Mute Controller -->
+<div class="flex items-center gap-3 bg-surface-container-lowest px-4 py-2.5 rounded-lg border border-outline-variant/30">
+<button aria-label="Mute Audio" class="text-primary hover:text-primary-fixed transition-colors flex items-center justify-center" id="audioConsoleMuteBtn">
+<span class="material-symbols-outlined text-[20px]" id="audioConsoleMuteIcon">volume_up</span>
+</button>
+<input aria-label="Master Volume" class="w-full accent-primary bg-surface-container-high h-1.5 rounded-lg cursor-pointer" id="masterVolumeSlider" max="100" min="0" type="range" value="85"/>
+<span class="font-label-sm text-label-sm text-outline w-10 text-right font-mono" id="volumePercentDisplay">85%</span>
+</div>
+</div>
+</div>
+<!-- VOICE DICTATION & MANUAL DISPATCH CONSOLE -->
+<div class="p-5 rounded-xl bg-surface-container-low border border-outline-variant/30 shadow-[0_8px_24px_rgba(0,0,0,0.5)] flex flex-col justify-between gap-4 relative overflow-hidden">
+<!-- Glowing Audio Wave Halo Background -->
+<div class="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-primary/0 blur-2xl transition-all duration-500 pointer-events-none" id="micPulsarRing"></div>
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase text-outline tracking-wider flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+              SPEECH-TO-TEXT &amp; AUDIO DISPATCH
+            </span>
+<span class="font-label-sm text-label-sm text-secondary" id="speechConfidence">GATA DE TRANSMISIE</span>
+</div>
+<!-- Voice Button & Live Transcription Row -->
+<div class="flex items-center gap-3">
+<!-- Tactile Heavy Cast-Metal Dictation Rocker Button -->
+<button aria-label="Start Voice Dictation" class="relative group shrink-0 px-5 py-3 rounded-xl bg-gradient-to-b from-surface-container-high to-surface-container active:translate-y-0.5 shadow-[0_6px_0_#0c0e11,0_12px_20px_rgba(0,0,0,0.6)] hover:shadow-[0_4px_0_#0c0e11,0_8px_16px_rgba(0,0,0,0.5)] transition-all flex items-center gap-3" id="voiceDictateBtn">
+<div class="w-3 h-3 rounded-full bg-outline-variant shadow-inner transition-colors duration-300" id="micIndicatorPip"></div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[22px] text-primary group-hover:scale-110 transition-transform" id="micIcon">mic</span>
+<div class="flex flex-col text-left">
+<span class="font-headline-sm text-headline-sm uppercase tracking-wider text-primary leading-none" id="micPrimaryText">VORBEȘTE</span>
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider text-[10px]" id="micSubText">RO / EN</span>
+</div>
+</div>
+<span class="hidden absolute inset-0 rounded-xl bg-primary-container/20 animate-ping pointer-events-none" id="micActivePulse"></span>
+</button>
+<!-- Real-Time Speech Recognition Telemetry / Live Stream Transcript -->
+<div class="w-full flex flex-col min-w-0 bg-surface-container-lowest p-3 rounded-lg shadow-inner h-16 justify-center">
+<p class="font-body-md text-body-md text-on-surface line-clamp-2 italic" id="liveTranscriptDisplay">
+                "Apasă microfonul sau alege un preset rapid mai jos..."
+              </p>
+</div>
+</div>
+</div>
+<!-- Preset Chips & Manual Input -->
+<div class="flex flex-col gap-3">
+<div class="flex flex-wrap gap-1.5">
+<button class="preset-chip px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary font-label-md text-label-md uppercase tracking-wider transition-all shadow-sm active:translate-y-0.5" data-text="SOSIRI BUCURESTI•RO642 OTO">
+              SOSIRI BUCUREȘTI
+            </button>
+<button class="preset-chip px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md uppercase tracking-wider transition-all shadow-sm active:translate-y-0.5" data-text="KL1382 INTARZIAT•NOU 14:20">
+              KL1382 ÎNTÂRZIAT
+            </button>
+<button class="preset-chip px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-secondary font-label-md text-label-md uppercase tracking-wider transition-all shadow-sm active:translate-y-0.5" data-text="POARTA 12 IMBARCARE IMEDIAT">
+              GATE 12 BOARDING
+            </button>
+<button class="preset-chip px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary-fixed-dim font-label-md text-label-md uppercase tracking-wider transition-all shadow-sm active:translate-y-0.5" data-text="BINE ATI VENIT•WELCOME ALL">
+              BINE AȚI VENIT!
+            </button>
+</div>
+<!-- Manual Text Input & Dispatch Form -->
+<div class="flex items-center gap-2 bg-surface-container-lowest p-1 rounded-xl shadow-inner border border-outline-variant/30">
+<div class="flex items-center pl-3 text-outline">
+<span class="material-symbols-outlined text-[18px]">keyboard</span>
+</div>
+<input class="w-full bg-transparent px-2 py-2 font-label-md text-label-md text-on-surface placeholder:text-outline-variant focus:outline-none uppercase" id="manualInput" maxlength="56" placeholder="TASTEAZĂ MESAJ (MAX 56 LITERE)..." type="text"/>
+<button class="px-4 py-2 rounded-lg bg-primary text-on-primary font-headline-sm text-headline-sm uppercase tracking-wider hover:bg-primary-fixed transition-colors shrink-0 shadow-md active:scale-95" id="dispatchManualBtn">
+              AFIȘEAZĂ
+            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- MECHANICAL CONTROLS & SPEED DIAL DESKTOP ROW -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pb-6">
+<!-- Speed Setting Card -->
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 shadow flex flex-col gap-2">
+<div class="flex items-center justify-between text-outline">
+<span class="font-label-sm text-label-sm uppercase tracking-wider">VITEZĂ ROTIRE</span>
+<span class="font-label-sm text-label-sm text-primary uppercase font-bold" id="speedValueLabel">REALISTĂ (45MS)</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[16px] text-outline">slow_motion_video</span>
+<input class="w-full accent-primary bg-surface-container-high h-1.5 rounded-lg cursor-pointer" id="speedSlider" max="120" min="15" step="5" type="range" value="45"/>
+<span class="material-symbols-outlined text-[16px] text-outline">bolt</span>
+</div>
+</div>
+<!-- Board Operations Card -->
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 shadow flex items-center justify-between gap-3">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">RESET CENTRAL</span>
+<span class="font-label-sm text-label-sm text-outline-variant">Golește tăblițele (Blank)</span>
+</div>
+<button class="px-4 py-2 rounded-lg bg-surface-container-high hover:bg-surface-container text-error font-label-md text-label-md uppercase tracking-wider transition-colors shadow-sm active:translate-y-0.5 flex items-center gap-2 border border-outline-variant/20" id="clearBoardBtn">
+<span class="material-symbols-outlined text-[16px]">backspace</span>
+          RESET
+        </button>
+</div>
+<!-- Terminal Diagnostic Audio Info -->
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 shadow flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">AUDIO SYNTHESIS</span>
+<span class="font-label-sm text-label-sm text-outline" id="synthStatusText">WebAudio 3-Part Flap Engine</span>
+</div>
+<div class="flex items-center gap-1.5" id="audioBarGroup">
+<span class="w-1.5 h-3 bg-secondary-container rounded-sm transition-all duration-75"></span>
+<span class="w-1.5 h-5 bg-secondary rounded-sm transition-all duration-75"></span>
+<span class="w-1.5 h-2 bg-secondary-container rounded-sm transition-all duration-75"></span>
+<span class="w-1.5 h-4 bg-secondary rounded-sm transition-all duration-75"></span>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script>
+(() => {
+  // === CONFIGURATION & STATE ===
+  const ROWS = 4;
+  const COLS = 14;
+  const TOTAL_TILES = ROWS * COLS;
+  
+  const CHARACTERS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789•-:!?,./";
+  
+  let flipIntervalMs = 45;
+  let totalFlipCycles = 0;
+  let isListening = false;
+  let recognitionInstance = null;
+
+  const tileStates = [];
+  const tileElements = [];
+
+  // =========================================================================
+  // === REALISTIC SOLARI SPLIT-FLAP WEB AUDIO SYNTHESIZER (3 ACOUSTIC BANDS) ===
+  // =========================================================================
+  class SolariAudioEngine {
+    constructor() {
+      this.ctx = null;
+      this.masterGain = null;
+      this.volume = 0.85;
+      this.isMuted = false;
+      this.soundProfile = 'solari';
+      this.noiseBuffer = null;
+      this.isUnlocked = false;
+      this.lastPlayTime = 0;
+      this.vuAnimTimeout = null;
+    }
+
+    init() {
+      if (this.ctx) {
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+        return;
+      }
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return;
+        this.ctx = new AudioContextClass();
+
+        this.masterGain = this.ctx.createGain();
+        this.masterGain.gain.setValueAtTime(this.isMuted ? 0 : this.volume, this.ctx.currentTime);
+        this.masterGain.connect(this.ctx.destination);
+
+        const sampleRate = this.ctx.sampleRate;
+        const bufferSize = Math.floor(sampleRate * 0.08);
+        this.noiseBuffer = this.ctx.createBuffer(1, bufferSize, sampleRate);
+        const data = this.noiseBuffer.getChannelData(0);
+        let lastOut = 0.0;
+        for (let i = 0; i < bufferSize; i++) {
+          const white = Math.random() * 2 - 1;
+          data[i] = (lastOut * 0.6) + (white * 0.4);
+          lastOut = data[i];
+        }
+
+        this.isUnlocked = true;
+        this.updateLedStatus(true);
+      } catch (err) {
+        console.warn('AudioContext init error:', err);
+      }
+    }
+
+    unlock() {
+      this.init();
+      if (this.ctx && this.ctx.state === 'suspended') {
+        this.ctx.resume().then(() => {
+          this.isUnlocked = true;
+          this.updateLedStatus(true);
+        });
+      }
+    }
+
+    setVolume(pct) {
+      this.volume = Math.max(0, Math.min(1, pct));
+      if (this.masterGain && this.ctx) {
+        const target = this.isMuted ? 0 : this.volume;
+        this.masterGain.gain.setValueAtTime(target, this.ctx.currentTime);
+      }
+    }
+
+    setMuted(mute) {
+      this.isMuted = mute;
+      if (this.masterGain && this.ctx) {
+        this.masterGain.gain.setValueAtTime(this.isMuted ? 0 : this.volume, this.ctx.currentTime);
+      }
+      this.updateLedStatus(!this.isMuted);
+    }
+
+    setProfile(profile) {
+      this.soundProfile = profile;
+    }
+
+    updateLedStatus(active) {
+      const led = document.getElementById('audioStatusLed');
+      const sideStatus = document.getElementById('sidebarSoundStatus');
+      if (led) {
+        if (active && !this.isMuted) {
+          led.className = 'w-3 h-3 rounded-full bg-primary shadow-[0_0_8px_#ffc174]';
+          if (sideStatus) { sideStatus.textContent = 'ACTIVE'; sideStatus.className = 'font-label-sm text-label-sm text-primary'; }
+        } else {
+          led.className = 'w-3 h-3 rounded-full bg-outline-variant';
+          if (sideStatus) { sideStatus.textContent = 'MUTED'; sideStatus.className = 'font-label-sm text-label-sm text-outline'; }
+        }
+      }
+    }
+
+    triggerVisualWave() {
+      const vuBars = [
+        document.getElementById('vuBar1'),
+        document.getElementById('vuBar2'),
+        document.getElementById('vuBar3'),
+        document.getElementById('vuBar4'),
+        document.getElementById('vuBar5')
+      ];
+      if (!vuBars[0]) return;
+
+      vuBars.forEach(bar => {
+        if (bar) {
+          const h = Math.floor(Math.random() * 16 + 4);
+          bar.style.height = `${h}px`;
+        }
+      });
+
+      const barGroup = document.getElementById('audioBarGroup');
+      if (barGroup) {
+        const spans = barGroup.querySelectorAll('span');
+        spans.forEach(s => {
+          const randH = Math.floor(Math.random() * 18 + 6);
+          s.style.height = `${randH}px`;
+        });
+      }
+
+      clearTimeout(this.vuAnimTimeout);
+      this.vuAnimTimeout = setTimeout(() => {
+        vuBars.forEach((bar, idx) => {
+          if (bar) bar.style.height = `${[3, 6, 10, 8, 4][idx]}px`;
+        });
+        if (barGroup) {
+          const spans = barGroup.querySelectorAll('span');
+          const defaultHeights = [12, 20, 8, 16];
+          spans.forEach((s, idx) => {
+            s.style.height = `${defaultHeights[idx % defaultHeights.length]}px`;
+          });
+        }
+      }, 70);
+    }
+
+    playClack(isTargetLanding = false) {
+      if (this.isMuted) return;
+      this.unlock();
+      if (!this.ctx || !this.noiseBuffer) return;
+
+      const now = this.ctx.currentTime;
+      if (now - this.lastPlayTime < 0.008) return;
+      this.lastPlayTime = now;
+
+      this.triggerVisualWave();
+
+      let centerPitch = 90;
+      let noiseBandFreq = 3100;
+      let snapDecay = 0.012;
+      let resonanceGainVal = 0.15;
+      let pitchDropSpeed = 0.015;
+
+      if (this.soundProfile === 'studio') {
+        centerPitch = 120;
+        noiseBandFreq = 3800;
+        snapDecay = 0.009;
+        resonanceGainVal = 0.12;
+      } else if (this.soundProfile === 'soft') {
+        centerPitch = 70;
+        noiseBandFreq = 2200;
+        snapDecay = 0.018;
+        resonanceGainVal = 0.08;
+      }
+
+      const pitchVariance = 1 + (Math.random() * 0.14 - 0.07);
+      const volVariance = 1 + (Math.random() * 0.12 - 0.06);
+
+      const osc = this.ctx.createOscillator();
+      const oscGain = this.ctx.createGain();
+
+      osc.type = this.soundProfile === 'soft' ? 'sine' : 'triangle';
+      const startFreq = (centerPitch * pitchVariance) * (isTargetLanding ? 0.9 : 1.05);
+      osc.frequency.setValueAtTime(startFreq, now);
+      osc.frequency.exponentialRampToValueAtTime(42, now + pitchDropSpeed);
+
+      const oscPeak = (isTargetLanding ? 0.45 : 0.28) * volVariance;
+      oscGain.gain.setValueAtTime(oscPeak, now);
+      oscGain.gain.exponentialRampToValueAtTime(0.0001, now + snapDecay);
+
+      osc.connect(oscGain);
+      oscGain.connect(this.masterGain);
+      osc.start(now);
+      osc.stop(now + snapDecay + 0.005);
+
+      const noiseSource = this.ctx.createBufferSource();
+      noiseSource.buffer = this.noiseBuffer;
+
+      const noiseFilter = this.ctx.createBiquadFilter();
+      noiseFilter.type = 'bandpass';
+      noiseFilter.frequency.setValueAtTime(noiseBandFreq * pitchVariance, now);
+      noiseFilter.Q.setValueAtTime(isTargetLanding ? 2.5 : 3.4, now);
+
+      const noiseGain = this.ctx.createGain();
+      const noisePeak = (isTargetLanding ? 0.52 : 0.38) * volVariance;
+      noiseGain.gain.setValueAtTime(noisePeak, now);
+      noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + (isTargetLanding ? 0.016 : 0.011));
+
+      noiseSource.connect(noiseFilter);
+      noiseFilter.connect(noiseGain);
+      noiseGain.connect(this.masterGain);
+      noiseSource.start(now);
+      noiseSource.stop(now + 0.025);
+
+      const resFilter = this.ctx.createBiquadFilter();
+      resFilter.type = 'peaking';
+      resFilter.frequency.setValueAtTime(1450 * pitchVariance, now);
+      resFilter.Q.setValueAtTime(5.0, now);
+      resFilter.gain.setValueAtTime(6.0, now);
+
+      const resGain = this.ctx.createGain();
+      resGain.gain.setValueAtTime(resonanceGainVal * volVariance, now);
+      resGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.024);
+
+      noiseFilter.connect(resFilter);
+      resFilter.connect(resGain);
+      resGain.connect(this.masterGain);
+    }
+  }
+
+  const audioEngine = new SolariAudioEngine();
+
+  const unlockEvents = ['touchstart', 'touchend', 'mousedown', 'keydown', 'click'];
+  const globalUnlock = () => {
+    audioEngine.unlock();
+    unlockEvents.forEach(evt => document.removeEventListener(evt, globalUnlock));
+  };
+  unlockEvents.forEach(evt => document.addEventListener(evt, globalUnlock, { once: false, passive: true }));
+
+  function playMechanicalClack(isTargetLanding = false) {
+    audioEngine.playClack(isTargetLanding);
+  }
+
+  // === DOM GENERATION: SPLIT-FLAP TILES ===
+  const matrixContainer = document.getElementById('splitFlapMatrix');
+  const flipCountBadge = document.getElementById('flipCountBadge');
+  const matrixStateLabel = document.getElementById('matrixStateLabel');
+
+  for (let r = 0; r < ROWS; r++) {
+    const rowEl = document.createElement('div');
+    rowEl.className = 'grid grid-cols-14 gap-1 w-full';
+    rowEl.style.gridTemplateColumns = `repeat(${COLS}, minmax(0, 1fr))`;
+
+    for (let c = 0; c < COLS; c++) {
+      const index = r * COLS + c;
+
+      const tile = document.createElement('div');
+      tile.className = 'relative flex flex-col select-none aspect-[1/1.35] bg-[#131519] rounded-[3px] shadow-[0_3px_6px_rgba(0,0,0,0.85)] overflow-hidden cursor-pointer hover:brightness-110 transition-all';
+      tile.setAttribute('data-index', index);
+
+      tile.addEventListener('click', () => {
+        audioEngine.unlock();
+        const next = getNextChar(tileStates[index].current);
+        triggerFlipAnimation(index, next, true);
+      });
+
+      const topHalf = document.createElement('div');
+      topHalf.className = 'relative w-full h-1/2 overflow-hidden bg-[#171a20] flex items-end justify-center shadow-inner';
+      const topChar = document.createElement('span');
+      topChar.className = 'font-headline-lg text-2xl sm:text-3xl lg:text-4xl text-on-surface leading-none font-bold uppercase translate-y-[52%] tracking-normal';
+      topChar.textContent = ' ';
+      topHalf.appendChild(topChar);
+
+      const bottomHalf = document.createElement('div');
+      bottomHalf.className = 'relative w-full h-1/2 overflow-hidden bg-[#14161b] flex items-start justify-center';
+      const bottomChar = document.createElement('span');
+      bottomChar.className = 'font-headline-lg text-2xl sm:text-3xl lg:text-4xl text-on-surface leading-none font-bold uppercase -translate-y-[48%] tracking-normal';
+      bottomChar.textContent = ' ';
+      bottomHalf.appendChild(bottomChar);
+
+      const splitSeam = document.createElement('div');
+      splitSeam.className = 'absolute top-1/2 left-0 w-full h-[2px] -translate-y-[50%] bg-[#08090c] shadow-[0_1px_1px_rgba(255,255,255,0.06)] z-20 pointer-events-none flex justify-between items-center px-[1px]';
+      const notchLeft = document.createElement('div');
+      notchLeft.className = 'w-[1.5px] h-[4px] bg-outline-variant/60 rounded-full';
+      const notchRight = document.createElement('div');
+      notchRight.className = 'w-[1.5px] h-[4px] bg-outline-variant/60 rounded-full';
+      splitSeam.appendChild(notchLeft);
+      splitSeam.appendChild(notchRight);
+
+      tile.appendChild(topHalf);
+      tile.appendChild(bottomHalf);
+      tile.appendChild(splitSeam);
+      rowEl.appendChild(tile);
+
+      tileStates.push({ current: ' ', target: ' ', isFlipping: false });
+      tileElements.push({ tile, topChar, bottomChar, topHalf, bottomHalf });
+    }
+    matrixContainer.appendChild(rowEl);
+  }
+
+  function setTileCharacter(index, char) {
+    const el = tileElements[index];
+    el.topChar.textContent = char;
+    el.bottomChar.textContent = char;
+    tileStates[index].current = char;
+  }
+
+  function getNextChar(currentChar) {
+    const idx = CHARACTERS.indexOf(currentChar);
+    if (idx === -1 || idx === CHARACTERS.length - 1) {
+      return CHARACTERS[0];
+    }
+    return CHARACTERS[idx + 1];
+  }
+
+  function triggerFlipAnimation(index, nextChar, isFinal) {
+    const el = tileElements[index];
+    
+    el.topHalf.style.transition = `transform ${Math.max(12, flipIntervalMs * 0.45)}ms ease-in`;
+    el.topHalf.style.transform = 'perspective(300px) rotateX(-20deg)';
+    
+    playMechanicalClack(isFinal);
+    totalFlipCycles++;
+    if (totalFlipCycles % 8 === 0) {
+      flipCountBadge.textContent = `CYCLE: ${totalFlipCycles} FLAPS`;
+    }
+
+    setTimeout(() => {
+      setTileCharacter(index, nextChar);
+      el.topHalf.style.transform = 'none';
+    }, Math.max(12, flipIntervalMs * 0.5));
+  }
+
+  function flipTileToTarget(index, targetChar) {
+    const state = tileStates[index];
+    state.target = targetChar.toUpperCase();
+    if (!CHARACTERS.includes(state.target)) {
+      state.target = ' ';
+    }
+
+    if (state.current === state.target) {
+      state.isFlipping = false;
+      return;
+    }
+
+    if (state.isFlipping) return;
+    state.isFlipping = true;
+
+    matrixStateLabel.textContent = 'DISPATCH ROTATING...';
+    matrixStateLabel.className = 'font-label-sm text-label-sm tracking-wider text-primary animate-pulse';
+
+    function step() {
+      if (state.current === state.target) {
+        state.isFlipping = false;
+        checkIfAllSettled();
+        return;
+      }
+
+      const next = getNextChar(state.current);
+      const isFinal = (next === state.target);
+      triggerFlipAnimation(index, next, isFinal);
+
+      setTimeout(step, flipIntervalMs);
+    }
+
+    step();
+  }
+
+  function checkIfAllSettled() {
+    const stillFlipping = tileStates.some(s => s.isFlipping);
+    if (!stillFlipping) {
+      matrixStateLabel.textContent = 'STATIONARY IDLE';
+      matrixStateLabel.className = 'font-label-sm text-label-sm tracking-wider text-primary/70';
+    }
+  }
+
+  function broadcastMessage(text) {
+    audioEngine.unlock();
+    const cleanText = text.toUpperCase().replace(/[^A-Z0-9•\-:!?,./ ]/g, ' ');
+    const padded = cleanText.padEnd(TOTAL_TILES, ' ').slice(0, TOTAL_TILES);
+
+    for (let i = 0; i < TOTAL_TILES; i++) {
+      const targetChar = padded[i];
+      const columnDelay = (i % COLS) * 16 + Math.floor(i / COLS) * 28;
+      setTimeout(() => {
+        flipTileToTarget(i, targetChar);
+      }, columnDelay);
+    }
+  }
+
+  setTimeout(() => {
+    broadcastMessage("FLAPCAST 01 WIN " + 
+                     "DEPARTURES-LIVE" + 
+                     "RO642 PAR 12:40" + 
+                     "READY TO SPEAK ");
+  }, 400);
+
+  const testSoundBtn = document.getElementById('testSoundBtn');
+  if (testSoundBtn) {
+    testSoundBtn.addEventListener('click', () => {
+      audioEngine.unlock();
+      playMechanicalClack(false);
+      setTimeout(() => playMechanicalClack(false), 38);
+      setTimeout(() => playMechanicalClack(true), 80);
+    });
+  }
+
+  const soundModeBtns = document.querySelectorAll('.sound-mode-btn');
+  soundModeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      soundModeBtns.forEach(b => {
+        b.className = 'sound-mode-btn flex-1 h-full rounded text-[11px] font-label-sm tracking-wider uppercase transition-all text-on-surface-variant hover:text-primary hover:bg-surface-container';
+      });
+      btn.className = 'sound-mode-btn flex-1 h-full rounded text-[11px] font-label-sm tracking-wider uppercase transition-all bg-primary text-on-primary font-bold shadow-sm';
+      const mode = btn.getAttribute('data-mode');
+      audioEngine.setProfile(mode);
+      playMechanicalClack(true);
+    });
+  });
+
+  const masterVolumeSlider = document.getElementById('masterVolumeSlider');
+  const volumePercentDisplay = document.getElementById('volumePercentDisplay');
+  if (masterVolumeSlider && volumePercentDisplay) {
+    masterVolumeSlider.addEventListener('input', (e) => {
+      const val = parseInt(e.target.value, 10);
+      volumePercentDisplay.textContent = `${val}%`;
+      audioEngine.setVolume(val / 100);
+      if (val > 0 && audioEngine.isMuted) {
+        toggleMute(false);
+      }
+    });
+  }
+
+  function toggleMute(forceState = null) {
+    const newState = forceState !== null ? forceState : !audioEngine.isMuted;
+    audioEngine.setMuted(newState);
+
+    const soundIcon = document.getElementById('soundIcon');
+    const soundLabel = document.getElementById('soundLabel');
+    const audioConsoleMuteIcon = document.getElementById('audioConsoleMuteIcon');
+    const soundToggleBtn = document.getElementById('soundToggleBtn');
+
+    if (!newState) {
+      if (soundIcon) soundIcon.textContent = 'volume_up';
+      if (soundLabel) soundLabel.textContent = 'CLACK ON';
+      if (audioConsoleMuteIcon) audioConsoleMuteIcon.textContent = 'volume_up';
+      if (soundToggleBtn) soundToggleBtn.className = 'h-9 px-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary flex items-center gap-2 transition-colors border border-outline-variant/20 shadow-sm';
+      playMechanicalClack(true);
+    } else {
+      if (soundIcon) soundIcon.textContent = 'volume_off';
+      if (soundLabel) soundLabel.textContent = 'MUTED';
+      if (audioConsoleMuteIcon) audioConsoleMuteIcon.textContent = 'volume_off';
+      if (soundToggleBtn) soundToggleBtn.className = 'h-9 px-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-outline flex items-center gap-2 transition-colors border border-outline-variant/20 shadow-sm';
+    }
+  }
+
+  const soundToggleBtn = document.getElementById('soundToggleBtn');
+  if (soundToggleBtn) {
+    soundToggleBtn.addEventListener('click', () => toggleMute());
+  }
+
+  const audioConsoleMuteBtn = document.getElementById('audioConsoleMuteBtn');
+  if (audioConsoleMuteBtn) {
+    audioConsoleMuteBtn.addEventListener('click', () => toggleMute());
+  }
+
+  const speedSlider = document.getElementById('speedSlider');
+  const speedValueLabel = document.getElementById('speedValueLabel');
+  speedSlider.addEventListener('input', (e) => {
+    flipIntervalMs = parseInt(e.target.value, 10);
+    let speedDescriptor = 'REALISTĂ';
+    if (flipIntervalMs < 30) speedDescriptor = 'TURBO';
+    else if (flipIntervalMs > 70) speedDescriptor = 'METODICĂ';
+    speedValueLabel.textContent = `${speedDescriptor} (${flipIntervalMs}MS)`;
+  });
+
+  const clearBoardBtn = document.getElementById('clearBoardBtn');
+  clearBoardBtn.addEventListener('click', () => {
+    audioEngine.unlock();
+    broadcastMessage(''.padEnd(TOTAL_TILES, ' '));
+  });
+
+  const manualInput = document.getElementById('manualInput');
+  const dispatchManualBtn = document.getElementById('dispatchManualBtn');
+  function submitManual() {
+    const val = manualInput.value.trim();
+    if (val) {
+      broadcastMessage(val);
+      liveTranscriptDisplay.textContent = `"${val.toUpperCase()}"`;
+      speechConfidence.textContent = 'MANUAL DISPATCH';
+    }
+  }
+  dispatchManualBtn.addEventListener('click', submitManual);
+  manualInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') submitManual();
+  });
+
+  document.querySelectorAll('.preset-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const preset = chip.getAttribute('data-text');
+      manualInput.value = preset;
+      broadcastMessage(preset);
+      liveTranscriptDisplay.textContent = `"${preset}"`;
+      speechConfidence.textContent = 'PRESET DISPATCHED';
+    });
+  });
+
+  const voiceDictateBtn = document.getElementById('voiceDictateBtn');
+  const micIndicatorPip = document.getElementById('micIndicatorPip');
+  const micActivePulse = document.getElementById('micActivePulse');
+  const micIcon = document.getElementById('micIcon');
+  const micPrimaryText = document.getElementById('micPrimaryText');
+  const micSubText = document.getElementById('micSubText');
+  const micPulsarRing = document.getElementById('micPulsarRing');
+  const liveTranscriptDisplay = document.getElementById('liveTranscriptDisplay');
+  const speechConfidence = document.getElementById('speechConfidence');
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (SpeechRecognition) {
+    recognitionInstance = new SpeechRecognition();
+    recognitionInstance.continuous = false;
+    recognitionInstance.interimResults = true;
+    recognitionInstance.lang = 'ro-RO';
+
+    recognitionInstance.onstart = () => {
+      isListening = true;
+      audioEngine.unlock();
+      micIndicatorPip.className = 'w-3 h-3 rounded-full bg-primary shadow-[0_0_12px_#f59e0b]';
+      micActivePulse.classList.remove('hidden');
+      micIcon.textContent = 'settings_voice';
+      micPrimaryText.textContent = 'ASCULT...';
+      micSubText.textContent = 'VORBEȘTE';
+      micPulsarRing.className = 'absolute -right-12 -top-12 w-48 h-48 rounded-full bg-primary/20 blur-2xl transition-all duration-500 pointer-events-none animate-pulse';
+      speechConfidence.textContent = 'CAPTARE AUDIO ACTIVĂ';
+      speechConfidence.className = 'font-label-sm text-label-sm text-primary uppercase';
+    };
+
+    recognitionInstance.onresult = (event) => {
+      let interim = '';
+      let final = '';
+
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+          final += event.results[i][0].transcript;
+        } else {
+          interim += event.results[i][0].transcript;
+        }
+      }
+
+      const displayedText = final || interim;
+      if (displayedText) {
+        liveTranscriptDisplay.textContent = `"${displayedText}"`;
+        if (final) {
+          speechConfidence.textContent = 'CONFIRMAT & TRIMIS';
+          speechConfidence.className = 'font-label-sm text-label-sm text-secondary uppercase';
+          broadcastMessage(final);
+        }
+      }
+    };
+
+    recognitionInstance.onerror = (event) => {
+      console.warn('Speech Recognition error:', event.error);
+      stopDictation();
+      speechConfidence.textContent = `EROARE: ${event.error.toUpperCase()}`;
+      speechConfidence.className = 'font-label-sm text-label-sm text-error uppercase';
+    };
+
+    recognitionInstance.onend = () => {
+      stopDictation();
+    };
+  }
+
+  function startDictation() {
+    audioEngine.unlock();
+    if (recognitionInstance) {
+      try {
+        recognitionInstance.start();
+      } catch (err) {
+        recognitionInstance.stop();
+      }
+    } else {
+      simulateVoiceInput();
+    }
+  }
+
+  function stopDictation() {
+    isListening = false;
+    micIndicatorPip.className = 'w-3 h-3 rounded-full bg-outline-variant shadow-inner';
+    micActivePulse.classList.add('hidden');
+    micIcon.textContent = 'mic';
+    micPrimaryText.textContent = 'VORBEȘTE';
+    micSubText.textContent = 'RO / EN';
+    micPulsarRing.className = 'absolute -right-12 -top-12 w-48 h-48 rounded-full bg-primary/0 blur-2xl transition-all duration-500 pointer-events-none';
+  }
+
+  const fallbackSimulations = [
+    "ZBORUL RO301 CATRE FRANKFURT SE IMBARCA LA POARTA 04",
+    "ATENTIE: CONDITII METEO NEFAVORABILE PE RUTA LONDRA",
+    "BINE ATI VENIT LA AEROPORTUL INTERNATIONAL BUCURESTI",
+    "ULTIMUL APEL PENTRU CURSA TAROM 204 TIMISOARA"
+  ];
+  let simIndex = 0;
+
+  function simulateVoiceInput() {
+    isListening = true;
+    audioEngine.unlock();
+    micIndicatorPip.className = 'w-3 h-3 rounded-full bg-primary shadow-[0_0_12px_#f59e0b]';
+    micActivePulse.classList.remove('hidden');
+    micIcon.textContent = 'settings_voice';
+    micPrimaryText.textContent = 'SIMULARE...';
+    micSubText.textContent = 'DEMO';
+    micPulsarRing.className = 'absolute -right-12 -top-12 w-48 h-48 rounded-full bg-primary/20 blur-2xl transition-all duration-500 pointer-events-none animate-pulse';
+    speechConfidence.textContent = 'SIMULARE SPEECH-TO-TEXT';
+
+    const chosen = fallbackSimulations[simIndex % fallbackSimulations.length];
+    simIndex++;
+
+    let step = 0;
+    const words = chosen.split(' ');
+    liveTranscriptDisplay.textContent = '""';
+
+    const streamInterval = setInterval(() => {
+      step++;
+      const currentPhrase = words.slice(0, step).join(' ');
+      liveTranscriptDisplay.textContent = `"${currentPhrase}"`;
+
+      if (step >= words.length) {
+        clearInterval(streamInterval);
+        speechConfidence.textContent = 'TRANSMIS PE TABELĂ';
+        speechConfidence.className = 'font-label-sm text-label-sm text-secondary uppercase';
+        broadcastMessage(chosen);
+        setTimeout(stopDictation, 600);
+      }
+    }, 280);
+  }
+
+  voiceDictateBtn.addEventListener('click', () => {
+    audioEngine.unlock();
+    if (!isListening) {
+      startDictation();
+    } else {
+      if (recognitionInstance) recognitionInstance.stop();
+      stopDictation();
+    }
+  });
+
+})();
+</script>
+</body></html>

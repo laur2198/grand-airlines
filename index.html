@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html class="dark" lang="ro" data-theme="solari">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>FlapCast 01 – Tabelă Split-Flap</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23171a20'/%3E%3Crect x='4' y='4' width='24' height='11' rx='2' fill='%23282a2d'/%3E%3Crect x='4' y='17' width='24' height='11' rx='2' fill='%231e2023'/%3E%3Ctext x='16' y='25' font-family='Arial' font-weight='700' font-size='18' text-anchor='middle' fill='%23ffc174'%3EF%3C/text%3E%3C/svg%3E"/>
+<link rel="stylesheet" href="css/fonts.css"/>
+<link rel="stylesheet" href="css/app.css"/>
+</head>
+<body class="bg-[#0b0d10] text-on-surface font-body-md text-body-md min-h-screen lg:h-screen lg:overflow-hidden flex flex-col select-none">
+
+<!-- ================= APP HEADER ================= -->
+<header class="fc-app-header h-14 shrink-0 bg-[#111317] border-b border-[#282a2d] flex items-center justify-between px-3 sm:px-4 z-40 sticky top-0">
+  <div class="flex items-center gap-2 min-w-0">
+    <div class="w-7 h-7 rounded-lg bg-primary flex items-center justify-center shadow-sm shrink-0">
+      <span class="material-symbols-outlined text-[18px] text-on-primary">view_column</span>
+    </div>
+    <div class="flex flex-col min-w-0">
+      <span class="font-headline-sm text-headline-sm tracking-wider uppercase text-primary leading-none">FlapCast 01</span>
+      <span class="font-label-sm text-label-sm text-outline uppercase tracking-wider truncate">Tabelă Split-Flap • Playbook evenimente</span>
+    </div>
+  </div>
+  <div class="flex items-center gap-1.5">
+    <span class="hidden sm:flex items-center gap-1.5 px-2.5 h-8 rounded-lg bg-surface-container font-label-sm text-label-sm uppercase tracking-wider text-outline" id="projectorStatus">
+      <span class="w-2 h-2 rounded-full bg-outline-variant" id="projectorLed"></span><span id="projectorLabel">Proiector: nu</span>
+    </span>
+    <button class="h-9 w-9 sm:w-auto sm:px-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-primary flex items-center justify-center gap-1.5 transition-colors" id="projectorBtn" title="Deschide o fereastră separată pentru proiector / ecranul mare">
+      <span class="material-symbols-outlined text-[20px]">cast</span><span class="hidden md:inline font-label-md text-label-md uppercase tracking-wider">Proiector</span>
+    </button>
+    <button class="h-9 w-9 sm:w-auto sm:px-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-primary flex items-center justify-center gap-1.5 transition-colors" id="presentBtn" title="Ecran mare (F)">
+      <span class="material-symbols-outlined text-[20px]">fit_screen</span><span class="hidden md:inline font-label-md text-label-md uppercase tracking-wider">Ecran mare</span>
+    </button>
+    <button aria-label="Sunet pornit / oprit" class="h-9 w-9 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary flex items-center justify-center transition-colors" id="topSoundToggleBtn" title="Sunet pornit / oprit">
+      <span class="material-symbols-outlined text-[20px]" id="topSoundIcon">volume_up</span>
+    </button>
+  </div>
+</header>
+
+<div class="flex flex-1 min-h-0">
+  <!-- ================= SIDEBAR (laptop) ================= -->
+  <aside class="hidden lg:flex w-60 shrink-0 bg-surface-container-low/90 border-r border-outline-variant/20 flex-col justify-between p-3">
+    <nav class="flex flex-col gap-1" id="sideNav">
+      <div class="px-3 py-2 mb-1"><span class="font-label-sm text-label-sm uppercase tracking-widest text-outline">Workspace</span></div>
+      <button class="fc-nav flex items-center gap-3 px-3 py-2.5 rounded-lg font-label-md text-label-md tracking-wider transition-all text-on-surface-variant hover:text-primary hover:bg-surface-container" data-nav="sec-board"><span class="material-symbols-outlined text-[20px]">view_column</span><span>Tabelă live</span></button>
+      <button class="fc-nav flex items-center gap-3 px-3 py-2.5 rounded-lg font-label-md text-label-md tracking-wider transition-all text-on-surface-variant hover:text-primary hover:bg-surface-container" data-nav="sec-playbook"><span class="material-symbols-outlined text-[20px]">playlist_play</span><span>Playbook</span></button>
+      <button class="fc-nav flex items-center gap-3 px-3 py-2.5 rounded-lg font-label-md text-label-md tracking-wider transition-all text-on-surface-variant hover:text-primary hover:bg-surface-container" data-nav="sec-dictate"><span class="material-symbols-outlined text-[20px]">mic</span><span>Dictare & mesaje</span></button>
+      <button class="fc-nav flex items-center gap-3 px-3 py-2.5 rounded-lg font-label-md text-label-md tracking-wider transition-all text-on-surface-variant hover:text-primary hover:bg-surface-container" data-nav="sec-config"><span class="material-symbols-outlined text-[20px]">tune</span><span>Aspect & sunet</span></button>
+    </nav>
+    <div class="p-3 rounded-lg bg-surface-container-lowest border border-outline-variant/30 flex flex-col gap-2">
+      <div class="flex items-center justify-between">
+        <span class="font-label-sm text-label-sm text-outline">GRILĂ</span>
+        <span class="font-label-sm text-label-sm text-secondary" id="sidebarGrid">14 × 4</span>
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="font-label-sm text-label-sm text-outline">SUNET</span>
+        <span class="font-label-sm text-label-sm text-primary" id="sidebarSoundStatus">ACTIV</span>
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="font-label-sm text-label-sm text-outline">PROIECTOR</span>
+        <span class="font-label-sm text-label-sm text-outline" id="sidebarProjector">NECONECTAT</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN ================= -->
+  <main class="flex-1 min-w-0 lg:overflow-y-auto p-3 sm:p-5 lg:p-6 pb-28 lg:pb-8 flex flex-col gap-5 lg:gap-6" id="mainScroll">
+
+    <!-- ===== BOARD ===== -->
+    <section id="sec-board" class="fc-section">
+      <div class="fc-chassis relative w-full rounded-xl p-3 sm:p-5 overflow-hidden mx-auto">
+        <div class="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-primary/15 via-primary/5 to-transparent pointer-events-none"></div>
+        <div class="fc-chassis-head flex items-center justify-between gap-3 pb-2 sm:pb-3 mb-2 sm:mb-3 border-b border-outline-variant/30">
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="material-symbols-outlined text-[16px] fc-accent shrink-0">flight_takeoff</span>
+            <span class="font-label-sm text-label-sm sm:font-label-md sm:text-label-md tracking-widest uppercase fc-accent truncate" id="boardTitle">CENTRAL DEPARTURES &amp; VOICE DISPATCH</span>
+          </div>
+          <span class="font-label-sm text-label-sm text-outline-variant uppercase shrink-0" id="flipCountBadge">CYCLE: 0 FLAPS</span>
+        </div>
+        <div class="fc-matrix flex flex-col w-full" id="splitFlapMatrix"></div>
+        <div class="fc-chassis-foot flex items-center justify-between gap-3 pt-2 sm:pt-3 mt-2 sm:mt-3 border-t border-outline-variant/20">
+          <span class="font-label-sm text-label-sm tracking-wider text-outline/70 uppercase truncate" id="boardFooter">PATENTED SOLARI CASSETTE 1968-MOD</span>
+          <span class="font-label-sm text-label-sm tracking-wider text-primary/70 shrink-0" id="matrixStateLabel">STATIONARY IDLE</span>
+        </div>
+      </div>
+      <div class="fc-brand" id="brandMark"><span class="material-symbols-outlined">music_note</span><span id="brandText">GRAND MUSIC EVENTS</span></div>
+    </section>
+
+    <!-- ===== PLAYBOOK ===== -->
+    <section id="sec-playbook" class="fc-section">
+      <div class="p-4 sm:p-5 rounded-xl bg-surface-container-low border border-outline-variant/30 shadow-[0_8px_24px_rgba(0,0,0,0.6)] flex flex-col gap-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-outline-variant/20 pb-3">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary text-[26px]">playlist_play</span>
+            <div class="flex flex-col">
+              <span class="font-label-md text-label-md uppercase text-primary tracking-widest font-semibold">Playbook eveniment</span>
+              <span class="font-label-sm text-label-sm text-outline" id="fc-summary">—</span>
+            </div>
+          </div>
+          <span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider" id="fc-status">GATA</span>
+        </div>
+
+        <div class="grid grid-cols-1 xl:grid-cols-[1.1fr_1fr] gap-5">
+          <!-- Script editor -->
+          <div class="flex flex-col gap-2 min-w-0">
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-label-sm text-label-sm uppercase text-outline tracking-wider">Text / scenariu</span>
+              <span class="font-label-sm text-label-sm text-primary truncate" id="fc-interim"></span>
+            </div>
+            <textarea id="fc-script" rows="15" spellcheck="false"
+              class="w-full bg-surface-container-lowest rounded-lg p-3 font-body-sm text-body-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary/60 resize-y select-text"
+              placeholder="Scrie sau lipește textul aici.&#10;Rând gol = pagină nouă.&#10;*** sunet = semnal sonor."></textarea>
+            <div class="flex flex-wrap gap-2">
+              <button class="fc-btn" id="fc-dictate" title="Dictează text în editor"><span class="material-symbols-outlined text-[20px]">mic</span><span id="fc-dictate-label">Dictează</span></button>
+              <button class="fc-btn" id="fc-sound-insert" title="Inserează semnal sonor la cursor"><span class="material-symbols-outlined text-[20px]">notifications_active</span><span>+ Sunet</span></button>
+              <button class="fc-btn" id="fc-pause-insert" title="Inserează o pauză cu tabela goală"><span class="material-symbols-outlined text-[20px]">hourglass_empty</span><span>+ Pauză</span></button>
+              <button class="fc-btn" id="fc-open" title="Deschide proiect (.flapcast.json) sau text (.txt)"><span class="material-symbols-outlined text-[20px]">folder_open</span><span>Deschide</span></button>
+              <button class="fc-btn" id="fc-save-project" title="Salvează tot: text, setări, sunete – pentru alt calculator"><span class="material-symbols-outlined text-[20px]">save</span><span>Salvează proiect</span></button>
+              <button class="fc-btn" id="fc-save-txt" title="Salvează doar textul"><span class="material-symbols-outlined text-[20px]">download</span><span>.txt</span></button>
+              <button class="fc-btn" id="fc-example" title="Încarcă textul exemplu"><span class="material-symbols-outlined text-[20px]">auto_stories</span><span>Exemplu</span></button>
+              <input type="file" id="fc-file" accept=".txt,.json,text/plain,application/json" class="hidden"/>
+            </div>
+            <details class="rounded-lg bg-surface-container-lowest border border-outline-variant/30 px-3 py-2 text-on-surface-variant">
+              <summary class="cursor-pointer font-label-md text-label-md uppercase tracking-wider text-outline">Cum scriu scenariul?</summary>
+              <div class="font-body-sm text-body-sm leading-relaxed pt-2 flex flex-col gap-1 select-text">
+                <p><code class="text-primary">Rând gol</code> → pagină nouă. Frazele lungi se împart singure pe pagini.</p>
+                <p><code class="text-primary">*** sunet</code> → clopoțel de aeroport. <code class="text-primary">*** sunet avion</code> → sunetul tău încărcat cu numele „avion”.</p>
+                <p><code class="text-primary">[8s]</code> într-un paragraf → paginile lui stau 8 secunde pe ecran.</p>
+                <p><code class="text-primary">[pauză 3]</code> pe un rând → tabela goală 3 secunde.</p>
+              </div>
+            </details>
+          </div>
+
+          <!-- Steps + transport -->
+          <div class="flex flex-col gap-3 min-w-0">
+            <span class="font-label-sm text-label-sm uppercase text-outline tracking-wider">Pași (click pentru afișare)</span>
+            <div id="fc-steps" class="fc-scroll flex flex-col gap-1.5 overflow-y-auto pr-1 bg-surface-container-lowest rounded-lg p-2 border border-outline-variant/30 max-h-[320px] min-h-[120px]"></div>
+            <div class="flex flex-wrap items-center gap-2">
+              <button class="fc-btn" id="fc-prev" title="Pasul anterior (←)"><span class="material-symbols-outlined text-[20px]">skip_previous</span></button>
+              <button class="h-10 px-5 rounded-lg bg-primary text-on-primary hover:bg-primary-fixed flex items-center gap-1.5 font-headline-sm text-headline-sm uppercase tracking-wider shadow-md active:scale-95 transition-all" id="fc-play" title="Pornește / Pauză (Spațiu)"><span class="material-symbols-outlined text-[20px]" id="fc-play-icon">play_arrow</span><span id="fc-play-label">Pornește</span></button>
+              <button class="fc-btn" id="fc-next" title="Pasul următor (→)"><span class="material-symbols-outlined text-[20px]">skip_next</span></button>
+              <button class="fc-btn" id="fc-stop" title="Oprește și golește tabela"><span class="material-symbols-outlined text-[20px]">stop</span></button>
+            </div>
+            <div class="flex flex-col gap-2 bg-surface-container-lowest rounded-lg p-3 border border-outline-variant/30">
+              <div class="flex items-center justify-between text-outline">
+                <span class="font-label-sm text-label-sm uppercase tracking-wider">Viteză playbook</span>
+                <span class="font-label-sm text-label-sm text-primary font-bold" id="fc-hold-label">×1.0 normal</span>
+              </div>
+              <input type="range" id="fc-hold" min="0.5" max="2.5" step="0.1" value="1" class="w-full accent-primary h-1.5 cursor-pointer" title="Mai mare = paginile trec mai repede"/>
+              <div class="flex justify-between font-label-sm text-label-sm text-outline-variant uppercase"><span>mai lent</span><span>mai rapid</span></div>
+              <div class="flex flex-wrap gap-x-4 gap-y-2 pt-1">
+                <label class="fc-check"><input type="checkbox" id="fc-center" checked/> Centrează textul</label>
+                <label class="fc-check"><input type="checkbox" id="fc-loop"/> Repetă în buclă</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Voice / Sounds / Video -->
+        <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-4">
+          <!-- Voice -->
+          <div class="flex flex-col gap-3 bg-surface-container-lowest rounded-lg p-3 border border-outline-variant/30">
+            <div class="flex items-center justify-between">
+              <span class="flex items-center gap-2 font-label-md text-label-md uppercase tracking-wider text-primary"><span class="material-symbols-outlined text-[20px]">record_voice_over</span>Voce anunț</span>
+              <label class="fc-check"><input type="checkbox" id="fc-voice-on"/> Citește paginile</label>
+            </div>
+            <select id="fc-voice-select" class="fc-input"></select>
+            <div class="flex items-center gap-3">
+              <span class="font-label-sm text-label-sm text-outline uppercase w-16">Viteză</span>
+              <input type="range" id="fc-voice-rate" min="0.6" max="1.4" step="0.05" value="0.9" class="w-full accent-primary h-1.5 cursor-pointer"/>
+              <span class="font-label-sm text-label-sm text-primary w-12 text-right" id="fc-voice-rate-label">×0.90</span>
+            </div>
+            <button class="fc-btn" id="fc-voice-test"><span class="material-symbols-outlined text-[20px]">campaign</span><span>Testează vocea</span></button>
+            <p class="font-body-sm text-body-sm text-outline leading-snug" id="fc-voice-note">Vocea folosește vocile instalate în Windows / browser. Nu intră în înregistrarea video.</p>
+          </div>
+
+          <!-- Sounds & music -->
+          <div class="flex flex-col gap-3 bg-surface-container-lowest rounded-lg p-3 border border-outline-variant/30">
+            <div class="flex items-center justify-between">
+              <span class="flex items-center gap-2 font-label-md text-label-md uppercase tracking-wider text-primary"><span class="material-symbols-outlined text-[20px]">library_music</span>Sunete proprii</span>
+              <button class="fc-btn !h-8" id="fc-sound-add"><span class="material-symbols-outlined text-[18px]">add</span><span>Adaugă</span></button>
+              <input type="file" id="fc-sound-file" accept="audio/*" multiple class="hidden"/>
+            </div>
+            <div id="fc-sound-list" class="fc-scroll flex flex-col gap-1 max-h-[132px] overflow-y-auto"></div>
+            <div class="flex flex-col gap-2 pt-2 border-t border-outline-variant/20">
+              <label class="fc-check"><input type="checkbox" id="fc-music-on"/> Muzică de fundal în timpul playbook-ului</label>
+              <select id="fc-music-select" class="fc-input"></select>
+              <div class="flex items-center gap-3">
+                <span class="font-label-sm text-label-sm text-outline uppercase w-16">Volum</span>
+                <input type="range" id="fc-music-volume" min="0.05" max="1" step="0.05" value="0.35" class="w-full accent-primary h-1.5 cursor-pointer"/>
+                <span class="font-label-sm text-label-sm text-primary w-12 text-right" id="fc-music-volume-label">35%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Video -->
+          <div class="flex flex-col gap-3 bg-surface-container-lowest rounded-lg p-3 border border-outline-variant/30 md:col-span-2 2xl:col-span-1">
+            <span class="flex items-center gap-2 font-label-md text-label-md uppercase tracking-wider text-primary"><span class="material-symbols-outlined text-[20px]">movie</span>Video pentru ecrane mari</span>
+            <div class="flex items-center gap-1 bg-surface-container p-1 rounded-lg" id="fc-rec-res">
+              <button class="fc-seg" data-res="1080">Full HD 1080p</button>
+              <button class="fc-seg" data-res="2160">4K 2160p</button>
+            </div>
+            <label class="fc-check"><input type="checkbox" id="fc-rec-title" checked/> Include titlul tabelei în video</label>
+            <button class="h-11 px-4 rounded-lg bg-error-container/70 hover:bg-error-container text-on-error-container flex items-center justify-center gap-2 font-headline-sm text-headline-sm uppercase tracking-wider transition-colors" id="fc-record">
+              <span class="material-symbols-outlined text-[20px]">radio_button_checked</span><span id="fc-record-label">Înregistrează video</span>
+            </button>
+            <p class="font-body-sm text-body-sm text-outline leading-snug" id="fc-rec-note">Video-ul se generează direct la rezoluția aleasă, cu sunetele tabelei, clopoțelul, sunetele proprii și muzica. Ține fila deschisă în prim-plan cât înregistrează.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== DICTATION & MESSAGES ===== -->
+    <section id="sec-dictate" class="fc-section">
+      <div class="p-4 sm:p-5 rounded-xl bg-surface-container-low border border-outline-variant/30 shadow-[0_8px_24px_rgba(0,0,0,0.5)] flex flex-col gap-4 relative overflow-hidden">
+        <div class="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-primary/0 blur-2xl transition-all duration-500 pointer-events-none" id="micPulsarRing"></div>
+        <div class="flex items-center justify-between gap-2">
+          <span class="font-label-sm text-label-sm uppercase text-outline tracking-wider flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>Mesaj direct pe tabelă</span>
+          <span class="font-label-sm text-label-sm text-secondary uppercase text-right" id="speechConfidence">GATA DE TRANSMISIE</span>
+        </div>
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <button aria-label="Pornește dictarea" class="relative group shrink-0 px-5 py-3 rounded-xl bg-gradient-to-b from-surface-container-high to-surface-container active:translate-y-0.5 shadow-[0_6px_0_#0c0e11,0_12px_20px_rgba(0,0,0,0.6)] transition-all flex items-center gap-3" id="voiceDictateBtn">
+            <div class="w-3 h-3 rounded-full bg-outline-variant shadow-inner transition-colors duration-300" id="micIndicatorPip"></div>
+            <span class="material-symbols-outlined text-[24px] text-primary group-hover:scale-110 transition-transform" id="micIcon">mic</span>
+            <div class="flex flex-col text-left">
+              <span class="font-headline-sm text-headline-sm uppercase tracking-wider text-primary leading-none" id="micPrimaryText">Apasă &amp; vorbește</span>
+              <span class="font-label-sm text-label-sm text-outline uppercase tracking-wider" id="micSubText">Română / English</span>
+            </div>
+            <span class="hidden absolute inset-0 rounded-xl bg-primary-container/20 animate-ping pointer-events-none" id="micActivePulse"></span>
+          </button>
+          <div class="w-full flex flex-col min-w-0 bg-surface-container-lowest p-3 rounded-lg shadow-inner min-h-[64px] justify-center">
+            <p class="font-body-md text-body-md text-on-surface line-clamp-2 italic" id="liveTranscriptDisplay">"Apasă microfonul sau alege un mesaj rapid mai jos..."</p>
+          </div>
+        </div>
+        <div class="flex flex-col gap-2" id="sec-presets">
+          <span class="font-label-sm text-label-sm uppercase text-outline tracking-wider">Mesaje rapide</span>
+          <div class="flex flex-wrap gap-1.5">
+            <button class="preset-chip px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary font-label-md text-label-md uppercase tracking-wider transition-all shadow-sm active:translate-y-0.5" data-text="BUN VENIT LA BORD!">Bun venit la bord!</button>
+            <button class="preset-chip px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md uppercase tracking-wider transition-all shadow-sm active:translate-y-0.5" data-text="SOSIRI BUCUREȘTI•RO642 OTP">Sosiri București</button>
+            <button class="preset-chip px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-secondary font-label-md text-label-md uppercase tracking-wider transition-all shadow-sm active:translate-y-0.5" data-text="POARTA 12•ÎMBARCARE IMEDIATĂ">Poarta 12</button>
+            <button class="preset-chip px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary-fixed-dim font-label-md text-label-md uppercase tracking-wider transition-all shadow-sm active:translate-y-0.5" data-text="VĂ DORIM UN ZBOR LIN!">Zbor lin!</button>
+            <button class="preset-chip px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md uppercase tracking-wider transition-all shadow-sm active:translate-y-0.5" data-text="PAUZĂ•REVENIM ÎN 10 MINUTE">Pauză 10 min</button>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 bg-surface-container-lowest p-1 rounded-xl shadow-inner border border-outline-variant/30">
+          <span class="material-symbols-outlined text-[18px] text-outline pl-3">keyboard</span>
+          <input class="w-full bg-transparent px-2 py-2 font-label-md text-label-md text-on-surface placeholder:text-outline-variant focus:outline-none uppercase select-text" id="manualInput" maxlength="200" placeholder="Tastează un mesaj..." type="text"/>
+          <button class="px-4 py-2 rounded-lg bg-primary text-on-primary font-headline-sm text-headline-sm uppercase tracking-wider hover:bg-primary-fixed transition-colors shrink-0 shadow-md active:scale-95" id="dispatchManualBtn">Afișează</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== LOOK & SOUND CONFIG ===== -->
+    <section id="sec-config" class="fc-section grid grid-cols-1 xl:grid-cols-2 gap-5">
+      <!-- Look -->
+      <div class="p-4 sm:p-5 rounded-xl bg-surface-container-low border border-outline-variant/30 shadow-[0_8px_24px_rgba(0,0,0,0.6)] flex flex-col gap-4">
+        <span class="flex items-center gap-2 font-label-md text-label-md uppercase tracking-widest text-primary font-semibold border-b border-outline-variant/20 pb-3"><span class="material-symbols-outlined text-[20px]">palette</span>Aspect tabelă</span>
+        <label class="flex flex-col gap-1">
+          <span class="font-label-sm text-label-sm uppercase text-outline tracking-wider">Titlu tabelă</span>
+          <input id="setTitle" class="fc-input" maxlength="60" placeholder="GABRIELA & ALIN AIRLINES • ZBOR SPECIAL"/>
+        </label>
+        <label class="flex flex-col gap-1">
+          <span class="font-label-sm text-label-sm uppercase text-outline tracking-wider">Text subsol</span>
+          <input id="setFooter" class="fc-input" maxlength="60" placeholder="DESTINAȚIA: O VIAȚĂ ÎMPREUNĂ"/>
+        </label>
+        <div class="flex flex-col gap-1">
+          <span class="font-label-sm text-label-sm uppercase text-outline tracking-wider">Semnătură pe ecranul mare (colț dreapta-jos)</span>
+          <div class="flex items-center gap-3">
+            <input id="setBrand" class="fc-input" maxlength="40" placeholder="GRAND MUSIC EVENTS"/>
+            <label class="fc-check shrink-0"><input type="checkbox" id="setBrandOn" checked/> Afișează</label>
+          </div>
+        </div>
+        <div class="flex flex-col gap-1">
+          <span class="font-label-sm text-label-sm uppercase text-outline tracking-wider">Temă</span>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="themePicker">
+            <button class="fc-theme-btn" data-theme="solari"><span class="fc-swatch" style="background:#171a20;color:#e2e2e6">A</span>Solari clasic</button>
+            <button class="fc-theme-btn" data-theme="gold"><span class="fc-swatch" style="background:#1a1712;color:#e8c77a">A</span>Auriu nuntă</button>
+            <button class="fc-theme-btn" data-theme="cream"><span class="fc-swatch" style="background:#f3ece0;color:#3a2f26">A</span>Crem elegant</button>
+            <button class="fc-theme-btn" data-theme="airport"><span class="fc-swatch" style="background:#0f1d3a;color:#ffd23f">A</span>Aeroport</button>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <label class="flex flex-col gap-1">
+            <span class="font-label-sm text-label-sm uppercase text-outline tracking-wider">Mărime tabelă (coloane × rânduri)</span>
+            <select id="setGrid" class="fc-input">
+              <option value="14x4">14 × 4 – clasic</option>
+              <option value="16x5">16 × 5</option>
+              <option value="20x5">20 × 5 – ecran lat 16:9</option>
+              <option value="24x6">24 × 6 – ecran lat, text mult</option>
+              <option value="12x3">12 × 3 – litere foarte mari</option>
+            </select>
+          </label>
+          <div class="flex flex-col gap-2 justify-end">
+            <label class="fc-check"><input type="checkbox" id="setDiacritics"/> Diacritice pe tabelă (Ă Â Î Ș Ț)</label>
+            <span class="font-body-sm text-body-sm text-outline leading-snug">Cu diacritice, toate literele devin ~25% mai mici ca să încapă căciulițele.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sound & mechanics -->
+      <div class="p-4 sm:p-5 rounded-xl bg-surface-container-low border border-outline-variant/30 shadow-[0_8px_24px_rgba(0,0,0,0.6)] flex flex-col gap-4">
+        <div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+          <div class="flex items-center gap-3">
+            <span class="w-3 h-3 rounded-full bg-primary shadow-[0_0_8px_#ffc174]" id="audioStatusLed"></span>
+            <span class="font-label-md text-label-md uppercase text-primary tracking-widest font-semibold">Sunet Solari & mecanică</span>
+          </div>
+          <div class="flex items-end gap-1 h-6 px-2.5 py-1 rounded bg-surface-container-lowest border border-outline-variant/30" id="vuMeterContainer">
+            <div class="w-1 bg-primary/40 rounded-full h-1 transition-all duration-75" id="vuBar1"></div>
+            <div class="w-1 bg-primary/50 rounded-full h-1.5 transition-all duration-75" id="vuBar2"></div>
+            <div class="w-1 bg-primary rounded-full h-2.5 transition-all duration-75" id="vuBar3"></div>
+            <div class="w-1 bg-secondary rounded-full h-2 transition-all duration-75" id="vuBar4"></div>
+            <div class="w-1 bg-secondary rounded-full h-1 transition-all duration-75" id="vuBar5"></div>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <button class="h-11 px-4 rounded-lg bg-gradient-to-r from-primary-container to-primary text-on-primary font-headline-sm text-headline-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_4px_12px_rgba(245,158,11,0.25)] hover:brightness-110 active:scale-95 transition-all" id="testSoundBtn">
+            <span class="material-symbols-outlined text-[20px]">graphic_eq</span><span>Testează sunetul</span>
+          </button>
+          <div class="flex items-center gap-1 bg-surface-container-lowest p-1 rounded-lg border border-outline-variant/30 h-11">
+            <button class="sound-mode-btn fc-seg" data-mode="solari">Solari 1968</button>
+            <button class="sound-mode-btn fc-seg" data-mode="studio">Studio</button>
+            <button class="sound-mode-btn fc-seg" data-mode="soft">Soft</button>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 bg-surface-container-lowest px-4 py-2.5 rounded-lg border border-outline-variant/30">
+          <button aria-label="Sunet pornit / oprit" class="text-primary hover:text-primary-fixed transition-colors flex items-center" id="audioConsoleMuteBtn"><span class="material-symbols-outlined text-[20px]" id="audioConsoleMuteIcon">volume_up</span></button>
+          <input aria-label="Volum general" class="w-full accent-primary h-1.5 cursor-pointer" id="masterVolumeSlider" max="100" min="0" type="range" value="85"/>
+          <span class="font-label-sm text-label-sm text-outline w-10 text-right font-mono" id="volumePercentDisplay">85%</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="p-3 rounded-lg bg-surface-container-lowest border border-outline-variant/30 flex flex-col gap-2">
+            <div class="flex items-center justify-between text-outline">
+              <span class="font-label-sm text-label-sm uppercase tracking-wider">Viteză rotire</span>
+              <span class="font-label-sm text-label-sm text-primary uppercase font-bold" id="speedValueLabel">REALISTĂ (45MS)</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[16px] text-outline">slow_motion_video</span>
+              <input class="w-full accent-primary h-1.5 cursor-pointer" id="speedSlider" max="120" min="15" step="5" type="range" value="45"/>
+              <span class="material-symbols-outlined text-[16px] text-outline">bolt</span>
+            </div>
+          </div>
+          <div class="p-3 rounded-lg bg-surface-container-lowest border border-outline-variant/30 flex items-center justify-between gap-3">
+            <div class="flex flex-col">
+              <span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Reset tabelă</span>
+              <span class="font-label-sm text-label-sm text-outline-variant">Golește toate plăcuțele</span>
+            </div>
+            <button class="px-4 py-2 rounded-lg bg-surface-container-high hover:bg-surface-container text-error font-label-md text-label-md uppercase tracking-wider transition-colors flex items-center gap-2" id="clearBoardBtn">
+              <span class="material-symbols-outlined text-[16px]">backspace</span>Reset
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <p class="font-body-sm text-body-sm text-outline leading-snug px-1">
+      Taste: <b class="text-on-surface">Spațiu</b> pornește / pauză playbook • <b class="text-on-surface">← →</b> pas anterior / următor • <b class="text-on-surface">F</b> ecran mare • <b class="text-on-surface">Esc</b> ieșire.
+      Inspirat de tabelele electromecanice <b class="text-on-surface">Solari di Udine</b>.
+    </p>
+  </main>
+</div>
+
+<!-- ================= BOTTOM NAV (phone / tablet) ================= -->
+<nav class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-surface-container-lowest/95 backdrop-blur-xl shadow-[0_-4px_24px_rgba(0,0,0,0.7)] fc-safe-bottom" id="bottomNav">
+  <div class="h-16 px-1 flex justify-around items-center">
+    <button class="fc-nav flex flex-col items-center justify-center flex-1 h-12 rounded-lg transition-all text-on-surface-variant" data-nav="sec-board"><span class="material-symbols-outlined text-[22px]">view_column</span><span class="font-label-sm text-label-sm uppercase mt-0.5 tracking-wider">Tabelă</span></button>
+    <button class="fc-nav flex flex-col items-center justify-center flex-1 h-12 rounded-lg transition-all text-on-surface-variant" data-nav="sec-playbook"><span class="material-symbols-outlined text-[22px]">playlist_play</span><span class="font-label-sm text-label-sm uppercase mt-0.5 tracking-wider">Playbook</span></button>
+    <button class="fc-nav flex flex-col items-center justify-center flex-1 h-12 rounded-lg transition-all text-on-surface-variant" data-nav="sec-dictate"><span class="material-symbols-outlined text-[22px]">mic</span><span class="font-label-sm text-label-sm uppercase mt-0.5 tracking-wider">Dictare</span></button>
+    <button class="fc-nav flex flex-col items-center justify-center flex-1 h-12 rounded-lg transition-all text-on-surface-variant" data-nav="sec-config"><span class="material-symbols-outlined text-[22px]">tune</span><span class="font-label-sm text-label-sm uppercase mt-0.5 tracking-wider">Config</span></button>
+  </div>
+</nav>
+
+<!-- ================= PRESENTATION CONTROLS ================= -->
+<div id="fc-present-bar" class="items-center gap-2 px-3 py-2 rounded-xl bg-surface-container-low/95 border border-outline-variant/30 shadow-[0_8px_24px_rgba(0,0,0,0.7)] backdrop-blur">
+  <button class="fc-btn" data-act="prev"><span class="material-symbols-outlined text-[20px]">skip_previous</span></button>
+  <button class="fc-btn text-primary" data-act="play"><span class="material-symbols-outlined text-[20px]" id="fc-bar-play-icon">play_arrow</span></button>
+  <button class="fc-btn" data-act="next"><span class="material-symbols-outlined text-[20px]">skip_next</span></button>
+  <span class="font-label-md text-label-md text-outline px-2 tracking-wider" id="fc-bar-counter">—</span>
+  <button class="fc-btn" data-act="exit"><span class="material-symbols-outlined text-[20px]">close_fullscreen</span><span>Ieșire</span></button>
+</div>
+
+<!-- ================= PROJECTOR WINDOW START OVERLAY ================= -->
+<div id="displayOverlay" class="hidden fixed inset-0 z-[10000] bg-black/85 flex-col items-center justify-center gap-4 text-center p-6 cursor-pointer">
+  <span class="material-symbols-outlined text-primary text-[64px]">cast_connected</span>
+  <span class="font-headline-md text-headline-md uppercase tracking-widest text-primary">Fereastră proiector</span>
+  <span class="font-body-lg text-body-lg text-on-surface max-w-xl">Mută fereastra pe proiector / ecranul mare, apoi <b>fă click oriunde</b> aici: pornește sunetul și ecranul complet.</span>
+  <span class="font-label-md text-label-md text-outline uppercase tracking-wider">Controlul se face din fereastra principală</span>
+</div>
+
+<!-- ================= RECORDING OVERLAY ================= -->
+<div id="recOverlay" class="hidden fixed bottom-4 right-4 z-[10001] items-center gap-3 px-4 py-3 rounded-xl bg-surface-container-low border border-error/50 shadow-[0_8px_24px_rgba(0,0,0,0.7)]">
+  <span class="w-3 h-3 rounded-full bg-error animate-pulse"></span>
+  <div class="flex flex-col">
+    <span class="font-label-md text-label-md uppercase tracking-wider text-error" id="recTime">REC 00:00</span>
+    <span class="font-label-sm text-label-sm text-outline" id="recInfo">Nu schimba fila cât înregistrează</span>
+  </div>
+  <button class="fc-btn" id="recStopBtn"><span class="material-symbols-outlined text-[20px]">stop</span><span>Oprește</span></button>
+</div>
+
+<script src="js/board.js"></script>
+<script src="js/app.js"></script>
+<script src="js/video.js"></script>
+<script src="js/playbook.js"></script>
+</body>
+</html>
